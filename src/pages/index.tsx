@@ -4,7 +4,7 @@ import { Button, Container, LoginBox } from '../styles/login'
 
 export default function Home() {
 
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const {signIn} = useAuth()
@@ -13,7 +13,7 @@ export default function Home() {
     event.preventDefault()
 
     const data = {
-      username,
+      email,
       password
     }
 
@@ -34,8 +34,8 @@ export default function Home() {
               type="text"
               name="login"
               id="login"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               required />
           </label>
 
