@@ -9,7 +9,8 @@ export default function Dashboard() {
     const { user, isLoading } = useAuth()
 
     useEffect(() => {
-        api.get('/me').then(res => console.log(res.data))
+        api.get('/me').then(res => console.log(res))
+            .catch(error => console.log(error))
     }, [])
 
     if (isLoading) return <LoadingScreen />
