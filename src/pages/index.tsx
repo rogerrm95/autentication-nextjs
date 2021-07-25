@@ -1,13 +1,16 @@
+import { GetServerSideProps, GetStaticProps } from 'next'
+import { parseCookies } from 'nookies'
 import { FormEvent, useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { Button, Container, LoginBox } from '../styles/login'
+import { withSSRGuest } from '../utils/withSSRGuest'
 
 export default function Home() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const {signIn} = useAuth()
+  const { signIn } = useAuth()
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
@@ -58,3 +61,9 @@ export default function Home() {
     </Container>
   )
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+})

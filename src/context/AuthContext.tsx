@@ -1,7 +1,7 @@
+import { createContext, ReactNode, useEffect, useState } from 'react'
 import Router from 'next/router'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
-import { createContext, ReactNode, useEffect, useState } from 'react'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 
 type SignCredentials = {
     email: string,
@@ -27,10 +27,9 @@ type User = {
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
-export function signOut(){
-    console.log("ERRO")
-    destroyCookie(undefined, 'petmania.token')
-    destroyCookie(undefined, 'petmania.refreshToken')
+export function signOut() {
+    // destroyCookie(undefined, 'petmania.token')
+    // destroyCookie(undefined, 'petmania.refreshToken')
 
     Router.push('/')
 }
@@ -60,7 +59,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         try {
             setIsLoading(true)
 
-            const response = await api.post('sessions', {
+            const response = await api.post('/sessions', {
                 email,
                 password
             })

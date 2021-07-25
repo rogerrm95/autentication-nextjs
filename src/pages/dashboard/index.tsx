@@ -1,16 +1,22 @@
 import { useEffect } from 'react'
+
 import { LoadingScreen } from '../../components/LoadingScreen'
 import { useAuth } from '../../hooks/useAuth'
-import { api } from '../../services/api'
+
 import { DashboardContainer } from './styles'
+import { withSSRAuth } from '../../utils/withSSRAuth'
+
+// Services //
+import { api } from '../../services/apiClient'
+import { setupAPIClient } from '../../services/api'
 
 export default function Dashboard() {
 
     const { user, isLoading } = useAuth()
 
     useEffect(() => {
-        api.get('/me').then(res => console.log(res))
-            .catch(error => console.log(error))
+        api.get('/me')
+            .then(res => console.log(res))
     }, [])
 
     if (isLoading) return <LoadingScreen />
@@ -21,3 +27,14 @@ export default function Dashboard() {
         </DashboardContainer>
     )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+    const apiClient = setupAPIClient(ctx)
+    const response = await apiClient.get('/me')
+
+    console.log(response.data)
+
+    return {
+        props: {}
+    }
+})
