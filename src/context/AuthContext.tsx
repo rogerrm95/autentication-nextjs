@@ -28,8 +28,8 @@ type User = {
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function signOut() {
-    // destroyCookie(undefined, 'petmania.token')
-    // destroyCookie(undefined, 'petmania.refreshToken')
+    //destroyCookie(undefined, 'petmania.token')
+    //destroyCookie(undefined, 'petmania.refreshToken')
 
     Router.push('/')
 }
