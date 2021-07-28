@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const DashboardContainer = styled.div`
+export const MetricsContainer = styled.div`
     width: 100%;
     height: 100%;
 
