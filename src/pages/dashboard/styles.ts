@@ -10,5 +10,16 @@ export const DashboardContainer = styled.div`
     align-items: center;
     
     gap: 16px;
+
+    .button-box {
+        width: 160px;
+        transition: filter 0.2s;
+
+        &:hover {
+            filter: brightness(0.7);
+        }
+    }
+
+
     
 `

@@ -9,7 +9,8 @@ type SignCredentials = {
 }
 
 type AuthContextData = {
-    signIn(credentials: SignCredentials): Promise<void>;
+    signIn: (credentials: SignCredentials) => Promise<void>,
+    signOut: () => void,
     isAuthenticated: boolean,
     isLoading: boolean,
     user: User
@@ -27,9 +28,13 @@ type User = {
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
+let authChannel: BroadcastChannel
+
 export function signOut() {
     //destroyCookie(undefined, 'petmania.token')
     //destroyCookie(undefined, 'petmania.refreshToken')
+
+    authChannel.postMessage('signOut')
 
     Router.push('/')
 }
@@ -38,6 +43,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User>()
     const isAuthenticated = !!user
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        authChannel = new BroadcastChannel('auth')
+
+        authChannel.onmessage = (message => {
+            switch (message.data) {
+                case 'signOut':
+                    signOut()
+                    break;
+                default:
+                    break;
+            }
+        })
+    }, [])
 
     useEffect(() => {
         const { 'petmania.token': token } = parseCookies()
@@ -90,7 +109,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, isLoading, user, signIn }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, user, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     )

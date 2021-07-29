@@ -13,10 +13,11 @@ import { setupAPIClient } from '../../services/api'
 // Styles //
 import { DashboardContainer } from './styles'
 import { Can } from '../../components/Can'
+import { LogoutButton } from '../../components/LogoutButton/indext'
 
 export default function Dashboard() {
 
-    const { user, isLoading } = useAuth()
+    const { user, isLoading, signOut } = useAuth()
     const userCanSeeMetrics = useCan({
         roles: ['administrator']
     })
@@ -25,6 +26,10 @@ export default function Dashboard() {
         api.get('/me')
             .then(res => console.log(res))
     }, [])
+
+    function handleLogoutUser() {
+        signOut()
+    }
 
     if (isLoading) return <LoadingScreen />
 
@@ -37,6 +42,9 @@ export default function Dashboard() {
             <Can permissions={['metrics.list']}>
                 Métricas
             </Can>
+
+            <LogoutButton onClick={handleLogoutUser} />
+
         </DashboardContainer>
     )
 }
